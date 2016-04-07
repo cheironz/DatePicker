@@ -1,11 +1,9 @@
 var date_picker = new Object();
 // 日期存储
 date_picker.current = new Date();
-
 // 容器创建
 date_picker.container = document.createElement('div');
 date_picker.container.className += 'date-picker';
-
 // 卡片创建
 date_picker.createCards = function(){
 	for (i = 0; i <= 2; i++){
@@ -243,7 +241,7 @@ date_picker.createData = function(nowDate, container){
 						dateBtn.innerHTML = d < 10 ? '0' + d : d;
 						dateBtn.className += 'date-btn';
 						if(d == currentDate){
-							dateBtn.className += 'current-date';
+							dateBtn.className += ' current-date';
 						}
 						td.appendChild(dateBtn);
 						d++;
