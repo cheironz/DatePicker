@@ -4,6 +4,7 @@ date_picker.current = new Date();
 // 容器创建
 date_picker.container = document.createElement('div');
 date_picker.container.className += 'date-picker';
+date_picker.container.style.position = 'absolute';
 // 卡片创建
 date_picker.createCards = function(){
 	for (i = 0; i <= 2; i++){
@@ -241,7 +242,7 @@ date_picker.createData = function(nowDate, container){
 						dateBtn = document.createElement('button');
 						dateBtn.innerHTML = d < 10 ? '0' + d : d;
 						dateBtn.className += 'date-btn';
-						if(d == currentDate){
+						if(currentYear == tmpDate.getFullYear() && currentMonth == tmpDate.getMonth() && d == tmpDate.getDate()){
 							dateBtn.className += ' current-date';
 						}
 						td.appendChild(dateBtn);
@@ -320,14 +321,34 @@ date_picker.event.selectDate = function(){
 		dateBtns[i].addEventListener('click', clickHandler);
 	}
 };
+date_picker.event.confirmResult = function(targetTrigger){
+	var confirmBtn = document.getElementById('confirmBtn');
+	confirmBtn.addEventListener('click', function(e){
+		var cyear,cmonth,cdate;
+		cyear = date_picker.result.getFullYear();
+		cmonth = date_picker.result.getMonth() < 9 ? '0' + (date_picker.result.getMonth() + 1) : date_picker.result.getMonth() + 1;
+		cdate = date_picker.result.getDate() < 10 ? '0' + date_picker.result.getDate() : date_picker.result.getDate();
+		targetTrigger[0].value = cyear + '-' + cmonth + '-' + cdate;
+		$(targetTrigger[0]).change();
+		var body = document.getElementsByTagName('body');
+		body[0].removeChild(date_picker.container);
+		date_picker.container.innerHTML = '';
+	});
+};
 
-date_picker.init = function(){
-	date_picker.createCards();
-	$('.wrapper').append(date_picker.container);
-	date_picker.effect.cardsInit();
-	date_picker.createData(date_picker.current, document.getElementById('currentCard'));
-	date_picker.event.prevMonth();
-	date_picker.event.nextMonth();
-	date_picker.event.prevYear();
-	date_picker.event.nextYear();
+date_picker.init = function(targetTrigger){
+	targetTrigger[0].addEventListener('click', function(e){
+		date_picker.createCards();
+		$('body').append(date_picker.container);
+		var triggerPosition = targetTrigger.offset();
+		date_picker.container.style.left = triggerPosition.left + (targetTrigger[0].clientWidth - 290)/2 + 'px';
+		date_picker.container.style.top = triggerPosition.top - (250 - targetTrigger[0].clientHeight)/2 + 'px';
+		date_picker.effect.cardsInit();
+		date_picker.createData(date_picker.current, document.getElementById('currentCard'));
+		date_picker.event.prevMonth();
+		date_picker.event.nextMonth();
+		date_picker.event.prevYear();
+		date_picker.event.nextYear();
+		date_picker.event.confirmResult(targetTrigger);
+	});
 };
