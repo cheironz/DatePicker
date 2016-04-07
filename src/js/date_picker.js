@@ -1,4 +1,4 @@
-var date_picker = new Object();
+var date_picker = {};
 // 日期存储
 date_picker.current = new Date();
 // 容器创建
@@ -14,7 +14,7 @@ date_picker.createCards = function(){
 };
 
 // 特效
-date_picker.effect  = new Object();
+date_picker.effect  = {};
 date_picker.effect.cardsInit = function(){
 		var cards = $('.date-card');
 		cards[0].id = 'currentCard';
@@ -23,12 +23,12 @@ date_picker.effect.cardsInit = function(){
 			cards[i].style.left = i*5 + 'px';
 			cards[i].style.top = i*5 + 'px';
 			cards[i].style.zIndex = 999 - i;
-			if (i==0) {
+			if (i === 0) {
 				cards[i].style.backgroundColor = 'rgba(255,255,255,0.95)';
 			}else{
 				cards[i].style.backgroundColor = 'rgba(255,255,255,0.9)';
-			};
-		};
+			}
+		}
 	};
 date_picker.effect.cardsNext = function(count,clickedBtn){
 		clickedBtn.disabled = true;
@@ -43,10 +43,10 @@ date_picker.effect.cardsNext = function(count,clickedBtn){
 			newCard.setAttribute('class','date-card');
 			var cards = $('.date-card');
 			$(cards[cards.length - 1]).after(newCard);
-			var cards = $('.date-card');
+			cards = $('.date-card');
 			for (var i = cards.length - 1; i >= 0; i--) {
 				$(cards[i]).addClass('card_anim2');
-			};
+			}
 			date_picker.effect.cardsInit();
 			date_picker.createData(date_picker.current, document.getElementById('currentCard'));
 			date_picker.event.prevMonth();
@@ -62,19 +62,19 @@ date_picker.effect.cardsPrev = function(count,clickedBtn){
 		var cards = $('.date-card');
 		for (var i = cards.length - 1; i >= 0; i--) {
 			$(cards[i]).addClass('card_anim2');
-		};
+		}
 		var goObj = $(cards[cards.length-1]);
 		goObj.remove();
-		var cards = $('.date-card');
+		cards = $('.date-card');
 		var oldCards = cards[0];
 		oldCards.removeAttribute('id');
-		for (var i = 0; i < cards.length; i++) {
-			cards[i].style.width = (280 - i*10) + 'px';
-			cards[i].style.left = (i+1)*5 + 'px';
-			cards[i].style.top = (i+1)*5 + 'px';
-			cards[i].style.zIndex = 998 - i;
-			cards[i].style.backgroundColor = 'rgba(255,255,255,0.9)';
-		};
+		for (var j = 0; j < cards.length; j++) {
+			cards[j].style.width = (280 - j*10) + 'px';
+			cards[j].style.left = (j+1)*5 + 'px';
+			cards[j].style.top = (j+1)*5 + 'px';
+			cards[j].style.zIndex = 998 - j;
+			cards[j].style.backgroundColor = 'rgba(255,255,255,0.9)';
+		}
 		var addNewCard = function(){
 			var newCard = document.createElement('div');
 			newCard.id = 'currentCard';
@@ -94,10 +94,10 @@ date_picker.effect.cardsPrev = function(count,clickedBtn){
 				newCard.style.left = '0';
 				newCard.style.opacity = 1;
 				oldCards.innerHTML = '';
-			}
+			};
 			setTimeout(anim,20);
 			clickedBtn.disabled = false;
-		}
+		};
 		setTimeout(addNewCard,200);
 	};
 
@@ -111,7 +111,7 @@ date_picker.createData = function(nowDate, container){
 		var getDaysOfMonth = function(year, month) {
 			month += 1;
 			if (month == 2) {
-				if ( (year % 4 == 0 && year % 100 != 0) || year % 400 == 0 ) {
+				if ( (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ) {
 					return 29;
 				}else{
 					return 28;
@@ -124,7 +124,7 @@ date_picker.createData = function(nowDate, container){
 						return 31;
 					}
 				}
-				for(var m in littleMonth){
+				for(m in littleMonth){
 					if (month == littleMonth[m]) {
 						return 30;
 					}
@@ -208,7 +208,7 @@ date_picker.createData = function(nowDate, container){
 			var day = date.getDay();
 			var days = getDaysOfMonth(year, month);
 			var tmp = Math.floor((days + day) / 7);
-			var rows = (days + day) % 7 == 0 ? tmp : (tmp + 1);
+			var rows = (days + day) % 7 === 0 ? tmp : (tmp + 1);
 			var d = 1;
 			// 循环行
 			for (var i = 1; i<= rows; i++){
@@ -222,9 +222,10 @@ date_picker.createData = function(nowDate, container){
 						tr.appendChild(td);
 						continue;
 					}
+					var dateBtn;
 					if (i == 1) {
 						if (j >= day + 1) {
-							var dateBtn = document.createElement('button');
+							dateBtn = document.createElement('button');
 							dateBtn.innerHTML = d < 10 ? '0' + d : d;
 							dateBtn.className += 'date-btn';
 							tmpDate = new Date();
@@ -237,7 +238,7 @@ date_picker.createData = function(nowDate, container){
 							td.innerHTML = '';
 						}
 					}else{
-						var dateBtn = document.createElement('button');
+						dateBtn = document.createElement('button');
 						dateBtn.innerHTML = d < 10 ? '0' + d : d;
 						dateBtn.className += 'date-btn';
 						if(d == currentDate){
@@ -260,7 +261,7 @@ date_picker.createData = function(nowDate, container){
 };
 
 // 事件
-date_picker.event = new Object();
+date_picker.event = {};
 date_picker.event.prevMonth = function(){
 	var prevMonthBtn = document.getElementById('prevMonthBtn');
 	prevMonthBtn.addEventListener('click', function(e){
@@ -286,7 +287,7 @@ date_picker.event.nextMonth = function(){
 		var clickedBtn = e.target;
 		date_picker.effect.cardsNext(1,clickedBtn);
 	});
-}
+};
 date_picker.event.prevYear = function(){
 	var prevYearBtn = document.getElementById('prevYearBtn');
 	prevYearBtn.addEventListener('click', function(e){
@@ -304,22 +305,21 @@ date_picker.event.nextYear = function(){
 		var clickedBtn = e.target;
 		date_picker.effect.cardsNext(12,clickedBtn);
 	});
-}
+};
 date_picker.event.selectDate = function(){
 	var dateBtns = $('.date-btn');
+	var clickHandler = function(e){
+		$('.date-picker .selected').removeClass('selected');
+		var clickedBtn = e.target;
+		var targetDate = parseInt(clickedBtn.innerHTML);
+		date_picker.result = date_picker.current;
+		date_picker.result.setDate(targetDate);
+		clickedBtn.className += ' selected';
+	};
 	for (var i = dateBtns.length - 1; i >= 0; i--) {
-		dateBtns[i].addEventListener('click', function(e){
-			$('.date-picker .selected').removeClass('selected');
-			var clickedBtn = e.target;
-			var targetDate = parseInt(clickedBtn.innerHTML);
-			date_picker.result = date_picker.current;
-			date_picker.result.setDate(targetDate);
-			clickedBtn.className += ' selected';
-		});
+		dateBtns[i].addEventListener('click', clickHandler);
 	}
-}
-
-
+};
 
 date_picker.init = function(){
 	date_picker.createCards();
@@ -330,4 +330,4 @@ date_picker.init = function(){
 	date_picker.event.nextMonth();
 	date_picker.event.prevYear();
 	date_picker.event.nextYear();
-}
+};
