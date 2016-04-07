@@ -31,7 +31,7 @@ date_picker.effect.cardsInit = function(){
 			}
 		}
 	};
-date_picker.effect.cardsNext = function(count,clickedBtn){
+date_picker.effect.cardsNext = function(count,clickedBtn,targetTrigger){
 		clickedBtn.disabled = true;
 		var cards = $('.date-card');
 		var goObj = $(cards[0]);
@@ -50,15 +50,16 @@ date_picker.effect.cardsNext = function(count,clickedBtn){
 			}
 			date_picker.effect.cardsInit();
 			date_picker.createData(date_picker.current, document.getElementById('currentCard'));
-			date_picker.event.prevMonth();
-			date_picker.event.nextMonth();
-			date_picker.event.prevYear();
-			date_picker.event.nextYear();
+			date_picker.event.prevMonth(targetTrigger);
+			date_picker.event.nextMonth(targetTrigger);
+			date_picker.event.prevYear(targetTrigger);
+			date_picker.event.nextYear(targetTrigger);
+			date_picker.event.confirmResult(targetTrigger);
 			clickedBtn.disabled = false;
 		};
 		setTimeout(removeGoObj,400);
 	};
-date_picker.effect.cardsPrev = function(count,clickedBtn){
+date_picker.effect.cardsPrev = function(count,clickedBtn,targetTrigger){
 		clickedBtn.disabled = true;
 		var cards = $('.date-card');
 		for (var i = cards.length - 1; i >= 0; i--) {
@@ -87,10 +88,12 @@ date_picker.effect.cardsPrev = function(count,clickedBtn){
 			newCard.style.left = '-50px';
 			newCard.style.opacity = 0;
 			$(cards[0]).before(newCard);
-			date_picker.event.prevMonth();
-			date_picker.event.nextMonth();
-			date_picker.event.prevYear();
-			date_picker.event.nextYear();
+			date_picker.event.prevMonth(targetTrigger);
+			date_picker.event.prevMonth(targetTrigger);
+			date_picker.event.nextMonth(targetTrigger);
+			date_picker.event.prevYear(targetTrigger);
+			date_picker.event.nextYear(targetTrigger);
+			date_picker.event.confirmResult(targetTrigger);
 			var anim = function(){
 				newCard.style.left = '0';
 				newCard.style.opacity = 1;
@@ -137,12 +140,12 @@ date_picker.createData = function(nowDate, container){
 			var yearDisplay = document.createElement('div');
 			yearDisplay.className += 'year-display';
 			var prevYearBtn = document.createElement('button');
-			prevYearBtn.innerHTML = '-';
+			prevYearBtn.innerHTML = '<i class="fa fa-angle-left"></i>';
 			prevYearBtn.id = 'prevYearBtn';
 			var yearNumber = document.createElement('span');
 			yearNumber.innerHTML = year;
 			var nextYearBtn = document.createElement('button');
-			nextYearBtn.innerHTML = '+';
+			nextYearBtn.innerHTML = '<i class="fa fa-angle-right"></i>';
 			nextYearBtn.id = 'nextYearBtn';
 			yearDisplay.appendChild(prevYearBtn);
 			yearDisplay.appendChild(yearNumber);
@@ -263,7 +266,7 @@ date_picker.createData = function(nowDate, container){
 
 // 事件
 date_picker.event = {};
-date_picker.event.prevMonth = function(){
+date_picker.event.prevMonth = function(targetTrigger){
 	var prevMonthBtn = document.getElementById('prevMonthBtn');
 	prevMonthBtn.addEventListener('click', function(e){
 		if(date_picker.current.getMonth() == 1){
@@ -273,10 +276,10 @@ date_picker.event.prevMonth = function(){
 			date_picker.current.setMonth(date_picker.current.getMonth()-1,1);
 		}
 		var clickedBtn = e.target;
-		date_picker.effect.cardsPrev(1,clickedBtn);
+		date_picker.effect.cardsPrev(1,clickedBtn,targetTrigger);
 	});
 };
-date_picker.event.nextMonth = function(){
+date_picker.event.nextMonth = function(targetTrigger){
 	var nextMonthBtn = document.getElementById('nextMonthBtn');
 	nextMonthBtn.addEventListener('click', function(e){
 		if (date_picker.current.getMonth() == 11) {
@@ -286,25 +289,25 @@ date_picker.event.nextMonth = function(){
 			date_picker.current.setMonth(date_picker.current.getMonth()+1,1);
 		}
 		var clickedBtn = e.target;
-		date_picker.effect.cardsNext(1,clickedBtn);
+		date_picker.effect.cardsNext(1,clickedBtn,targetTrigger);
 	});
 };
-date_picker.event.prevYear = function(){
+date_picker.event.prevYear = function(targetTrigger){
 	var prevYearBtn = document.getElementById('prevYearBtn');
 	prevYearBtn.addEventListener('click', function(e){
 		var newYear = date_picker.current.getFullYear() - 1;
 		date_picker.current.setFullYear(newYear);
 		var clickedBtn = e.target;
-		date_picker.effect.cardsPrev(12,clickedBtn);
+		date_picker.effect.cardsPrev(12,clickedBtn,targetTrigger);
 	});
 };
-date_picker.event.nextYear = function(){
+date_picker.event.nextYear = function(targetTrigger){
 	var nextYearBtn = document.getElementById('nextYearBtn');
 	nextYearBtn.addEventListener('click', function(e){
 		var newYear = date_picker.current.getFullYear() + 1;
 		date_picker.current.setFullYear(newYear);
 		var clickedBtn = e.target;
-		date_picker.effect.cardsNext(12,clickedBtn);
+		date_picker.effect.cardsNext(12,clickedBtn,targetTrigger);
 	});
 };
 date_picker.event.selectDate = function(){
@@ -345,10 +348,10 @@ date_picker.init = function(targetTrigger){
 		date_picker.container.style.top = triggerPosition.top - (250 - targetTrigger[0].clientHeight)/2 + 'px';
 		date_picker.effect.cardsInit();
 		date_picker.createData(date_picker.current, document.getElementById('currentCard'));
-		date_picker.event.prevMonth();
-		date_picker.event.nextMonth();
-		date_picker.event.prevYear();
-		date_picker.event.nextYear();
+		date_picker.event.prevMonth(targetTrigger);
+		date_picker.event.nextMonth(targetTrigger);
+		date_picker.event.prevYear(targetTrigger);
+		date_picker.event.nextYear(targetTrigger);
 		date_picker.event.confirmResult(targetTrigger);
 	});
 };
