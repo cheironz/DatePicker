@@ -9,13 +9,11 @@
 						// 日期存储
 						if (targetTrigger.value) {
 							DatePicker.current = new Date(targetTrigger.value);
-							DatePicker.result = DatePicker.current;
+							DatePicker.result = new Date(targetTrigger.value);
 						}else{
 							DatePicker.current = new Date();
 							DatePicker.result = new Date();
 						}
-
-						
 						// 生成 DOM
 						DatePicker.createDom = function(){
 							// DOM创建
@@ -134,7 +132,7 @@
 												dateBtn.className += ' current-date';
 											}
 											if(targetTrigger.value){
-												if(d === DatePicker.current.getDate()){
+												if(currentYear == DatePicker.result.getFullYear() && currentMonth == DatePicker.result.getMonth() && d == DatePicker.current.getDate()){
 													DatePicker.selectedDateBtn = dateBtn;
 													dateBtn.className += ' selected';
 												}
@@ -153,7 +151,7 @@
 											dateBtn.className += ' current-date';
 										}
 										if(targetTrigger.value){
-											if(d === DatePicker.current.getDate()){
+											if(currentYear == DatePicker.result.getFullYear() && currentMonth == DatePicker.result.getMonth() && d == DatePicker.current.getDate()){
 												DatePicker.selectedDateBtn = dateBtn;
 												dateBtn.className += ' selected';
 											}
@@ -286,9 +284,9 @@
 							prevMonthBtn.addEventListener('click', function(e){
 								if(DatePicker.current.getMonth() == 0){
 									var newYear = DatePicker.current.getFullYear() - 1;
-									DatePicker.current.setFullYear(newYear,11,1);
+									DatePicker.current.setFullYear(newYear,11);
 								}else{
-									DatePicker.current.setMonth(DatePicker.current.getMonth()-1,1);
+									DatePicker.current.setMonth(DatePicker.current.getMonth()-1);
 								}
 								var clickedBtn = e.target;
 								DatePicker.effect.cardsPrev(1,clickedBtn);
@@ -299,9 +297,9 @@
 							nextMonthBtn.addEventListener('click', function(e){
 								if (DatePicker.current.getMonth() == 11) {
 									var newYear = DatePicker.current.getFullYear() + 1;
-									DatePicker.current.setFullYear(newYear,0,1);
+									DatePicker.current.setFullYear(newYear,0);
 								}else{
-									DatePicker.current.setMonth(DatePicker.current.getMonth()+1,1);
+									DatePicker.current.setMonth(DatePicker.current.getMonth()+1);
 								}
 								var clickedBtn = e.target;
 								DatePicker.effect.cardsNext(1,clickedBtn);
