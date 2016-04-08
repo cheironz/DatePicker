@@ -28,6 +28,7 @@
 }
 .date-picker button {
   outline: none;
+  cursor: pointer;
 }
 .date-picker .calendar-head {
   width: 100%;

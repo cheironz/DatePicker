@@ -225,6 +225,7 @@
 							var goObj = cards[cards.length - 1];
 							DatePicker.effect.cards.removeChild(goObj);
 							cards[0].removeAttribute('id');
+							cards[0].removeChild(cards[0].childNodes[0]);
 							for (var i = 0; i < 2; i++) {
 								cards[i].style.width = (280 - i*10) + 'px';
 								cards[i].style.left = (i+1)*5 + 'px';
@@ -235,7 +236,6 @@
 							var addNewCard = function(){
 								var newCard = document.createElement('div');
 								newCard.id = 'currentCard';
-								newCard.appendChild(DatePicker.domElem);
 								var tableContent = DatePicker.domElem.dateDisplay.childNodes;
 								for (var i = tableContent.length - 1; i >= 0; i--) {
 									DatePicker.domElem.dateDisplay.removeChild(tableContent[i]);
@@ -244,6 +244,7 @@
 								DatePicker.createDate.createMonth();
 								DatePicker.createDate.createDate();
 								newCard.className += 'date-card card_anim2';
+								newCard.appendChild(DatePicker.domElem);
 								newCard.style.width = '290px';
 								newCard.style.backgroundColor = 'rgba(255,255,255,0.95)';
 								newCard.style.zIndex = '999';
@@ -252,12 +253,13 @@
 								DatePicker.effect.cards.insertBefore(newCard, DatePicker.effect.cards.firstChild);
 								var anim = function(){
 									newCard.style.left = '0';
-									newCard.style.opacity = 1;
+									newCard.style.opacity = 1;	
 								};
-								setTimeout(anim, 20);
 								clickedBtn.disabled = false;
+								setTimeout(anim, 20);
 							};
 							setTimeout(addNewCard, 200);
+
 						};
 						// 事件绑定
 						DatePicker.event = {};
@@ -270,7 +272,7 @@
 								DatePicker.effect.cardsPrev(12,clickedBtn);
 							});
 						};
-						DatePicker.event.nextYear = function(targetTrigger){
+						DatePicker.event.nextYear = function(){
 							var nextYearBtn = DatePicker.domElem.header.year.nextBtn;
 							nextYearBtn.addEventListener('click', function(e){
 								var newYear = DatePicker.current.getFullYear() + 1;
