@@ -167,6 +167,9 @@ date_picker.effect.cardsInit = function(){
 		}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2dc6cb107040209b8b8266aaa8ba07baf6860298
 =======
 >>>>>>> 2dc6cb107040209b8b8266aaa8ba07baf6860298
 	}
@@ -284,6 +287,7 @@ date_picker.effect.cardsPrev = function(count,clickedBtn,targetTrigger){
 		setTimeout(addNewCard,200);
 	};
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -449,6 +453,8 @@ date_picker.createData = function(nowDate, container){
 >>>>>>> parent of 52920e0... 年份切换图标修改，bug修复
 =======
 >>>>>>> 2dc6cb107040209b8b8266aaa8ba07baf6860298
+=======
+>>>>>>> 2dc6cb107040209b8b8266aaa8ba07baf6860298
 // 事件
 date_picker.event = {};
 date_picker.event.prevMonth = function(targetTrigger){
@@ -481,6 +487,7 @@ date_picker.event.nextMonth = function(targetTrigger){
 <<<<<<< HEAD
 date_picker.event.prevYear = function(targetTrigger){
 	date_picker.domElem.header.year.prevBtn.addEventListener('click', function(e){
+<<<<<<< HEAD
 =======
 date_picker.event.prevYear = function(){
 	var prevYearBtn = document.getElementById('prevYearBtn');
@@ -489,6 +496,8 @@ date_picker.event.prevYear = function(){
 =======
 date_picker.event.prevYear = function(targetTrigger){
 	date_picker.domElem.header.year.prevBtn.addEventListener('click', function(e){
+>>>>>>> 2dc6cb107040209b8b8266aaa8ba07baf6860298
+=======
 >>>>>>> 2dc6cb107040209b8b8266aaa8ba07baf6860298
 		var newYear = date_picker.current.getFullYear() - 1;
 		date_picker.current.setFullYear(newYear);
@@ -545,12 +554,15 @@ date_picker.init = function(targetTrigger){
 		date_picker.createData(date_picker.current, document.getElementById('currentCard'));
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 		date_picker.event.prevMonth();
 		date_picker.event.nextMonth();
 		date_picker.event.prevYear();
 		date_picker.event.nextYear();
 >>>>>>> parent of 52920e0... 年份切换图标修改，bug修复
+=======
+>>>>>>> 2dc6cb107040209b8b8266aaa8ba07baf6860298
 =======
 >>>>>>> 2dc6cb107040209b8b8266aaa8ba07baf6860298
 		date_picker.event.confirmResult(targetTrigger);
