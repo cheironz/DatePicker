@@ -6,8 +6,6 @@ var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	jshint = require('gulp-jshint'),
 	uglify = require('gulp-uglify'),
-	cache = require('gulp-cache'),
-	imagemin = require('gulp-imagemin'),
 	htmlmin = require('gulp-htmlmin'),
 	rename = require('gulp-rename'),
 	livereload = require('gulp-livereload'),
@@ -74,22 +72,14 @@ gulp.task('js', function(){
 	.pipe(gulp.dest('dist/js'));
 });
 
-gulp.task('image', function(){
-	return gulp.src('src/images/*')
-	.pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
-	.pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-	.pipe(gulp.dest('dist/images'));
-});
-
 gulp.task('watch', function(){
 	gulp.watch('src/*.html', ['html']);
 	gulp.watch('src/less/*.less', ['style']);
 	gulp.watch(['src/js/*.js', '!src/js/' + combineJSName, '!src/js/*.min.js'], ['js']);
-	gulp.watch('src/images/*', ['image'])
 	livereload.listen();
 	gulp.watch(['dist/*']).on('change', livereload.changed);
 });
 	
 gulp.task('default', function(){
-	gulp.start('html', 'style', 'js', 'image', 'watch');
+	gulp.start('html', 'style', 'js', 'watch');
 });
