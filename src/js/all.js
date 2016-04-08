@@ -284,7 +284,7 @@
 						DatePicker.event.prevMonth = function(){
 							var prevMonthBtn = DatePicker.domElem.monthDisplay.prevBtn;
 							prevMonthBtn.addEventListener('click', function(e){
-								if(DatePicker.current.getMonth() == 0){
+								if(DatePicker.current.getMonth() === 0){
 									var newYear = DatePicker.current.getFullYear() - 1;
 									DatePicker.current.setFullYear(newYear,11);
 								}else{
@@ -351,7 +351,7 @@
 							DatePicker.domElem.appendChild(DatePicker.domElem.monthDisplay);
 							DatePicker.domElem.appendChild(DatePicker.domElem.dateDisplay);
 						};
-					}
+					};
 					DatePickerBuilder();
 					// 生成数据
 					DatePicker.createDom();
