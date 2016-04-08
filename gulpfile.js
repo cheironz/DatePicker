@@ -3,7 +3,6 @@ var gulp = require('gulp'),
 	sourcemaps = require('gulp-sourcemaps'),
 	autoprefixer = require('gulp-autoprefixer'),
 	minifycss = require('gulp-minify-css'),
-	concat = require('gulp-concat'),
 	jshint = require('gulp-jshint'),
 	uglify = require('gulp-uglify'),
 	htmlmin = require('gulp-htmlmin'),
@@ -13,8 +12,6 @@ var gulp = require('gulp'),
 	notify = require('gulp-notify');
 
 // Configs
-var combineCSSName = 'all.css';
-var combineJSName = 'all.js';
 var htmlminConfig = {
 	removeComments: true,
 	collapseWhitespace: true,
@@ -46,9 +43,6 @@ gulp.task('style', function(){
 	.pipe(autoprefixer(autoprefixerConfig))
 	.pipe(gulp.dest('src/css'))
 	.pipe(gulp.dest('dist/css'))
-	.pipe(concat(combineCSSName))
-	.pipe(gulp.dest('src/css'))
-	.pipe(gulp.dest('dist/css'))
 	.pipe(rename({ suffix: '.min'}))
 	.pipe(minifycss())
 	.pipe(sourcemaps.write('./'))
@@ -62,9 +56,6 @@ gulp.task('js', function(){
 	.pipe(sourcemaps.init())
 	.pipe(jshint())
 	.pipe(jshint.reporter('default'))
-	.pipe(concat(combineJSName))
-	.pipe(gulp.dest('src/js'))
-	.pipe(gulp.dest('dist/js'))
 	.pipe(rename({ suffix: '.min'}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write('./'))
