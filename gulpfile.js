@@ -51,7 +51,7 @@ gulp.task('style', function(){
 });
 
 gulp.task('js', function(){
-	return gulp.src(['src/js/*.js', '!src/js/' + combineJSName, '!src/js/*.min.js'])
+	return gulp.src(['src/js/*.js', '!src/js/*.min.js'])
 	.pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
 	.pipe(sourcemaps.init())
 	.pipe(jshint())
@@ -66,7 +66,7 @@ gulp.task('js', function(){
 gulp.task('watch', function(){
 	gulp.watch('src/*.html', ['html']);
 	gulp.watch('src/less/*.less', ['style']);
-	gulp.watch(['src/js/*.js', '!src/js/' + combineJSName, '!src/js/*.min.js'], ['js']);
+	gulp.watch(['src/js/*.js', '!src/js/*.min.js'], ['js']);
 	livereload.listen();
 	gulp.watch(['dist/*']).on('change', livereload.changed);
 });
