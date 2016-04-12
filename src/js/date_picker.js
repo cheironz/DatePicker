@@ -37,8 +37,12 @@
 							DatePicker.domElem.className += 'date-picker-content';
 							DatePicker.domElem.header.className += 'calendar-head';
 							DatePicker.domElem.header.year.className += 'year-display';
+							DatePicker.domElem.header.year.prevBtn.className += 'prev-year-btn';
+							DatePicker.domElem.header.year.nextBtn.className += 'next-year-btn';
 							DatePicker.domElem.header.confirmBtn.className += 'confirm-btn';
 							DatePicker.domElem.monthDisplay.className += 'month-display';
+							DatePicker.domElem.monthDisplay.prevBtn.className += 'prev-month-btn';
+							DatePicker.domElem.monthDisplay.nextBtn.className += 'next-month-btn';
 						};
 						// 生成日历
 						DatePicker.createDate = {};
@@ -138,7 +142,6 @@
 												}
 											}
 											td.appendChild(dateBtn);
-											DatePicker.event.selectDate(dateBtn);
 											d++;
 										}else{
 											td.innerHTML = '';
@@ -157,7 +160,6 @@
 											}
 										}
 										td.appendChild(dateBtn);
-										DatePicker.event.selectDate(dateBtn);
 										d++;
 									}
 									tr.appendChild(td);
@@ -261,78 +263,81 @@
 							setTimeout(addNewCard, 200);
 
 						};
-						// 事件绑定
-						DatePicker.event = {};
-						DatePicker.event.prevYear = function(){
-							var prevYearBtn = DatePicker.domElem.header.year.prevBtn;
-							prevYearBtn.addEventListener('click', function(e){
+						// 事件处理
+						DatePicker.eventHandler = {};
+						DatePicker.eventHandler.prevYear = function(clickedBtn){
+							var newYear = DatePicker.current.getFullYear() - 1;
+							DatePicker.current.setFullYear(newYear);
+							DatePicker.effect.cardsPrev(12,clickedBtn);
+						};
+						DatePicker.eventHandler.nextYear = function(clickedBtn){
+							var newYear = DatePicker.current.getFullYear() + 1;
+							DatePicker.current.setFullYear(newYear);
+							DatePicker.effect.cardsNext(12,clickedBtn);
+						};
+						DatePicker.eventHandler.prevMonth = function(clickedBtn){
+							if(DatePicker.current.getMonth() === 0){
 								var newYear = DatePicker.current.getFullYear() - 1;
-								DatePicker.current.setFullYear(newYear);
-								var clickedBtn = e.target;
-								DatePicker.effect.cardsPrev(12,clickedBtn);
-							});
+								DatePicker.current.setFullYear(newYear,11);
+							}else{
+								DatePicker.current.setMonth(DatePicker.current.getMonth()-1);
+							}
+							DatePicker.effect.cardsPrev(1,clickedBtn);
 						};
-						DatePicker.event.nextYear = function(){
-							var nextYearBtn = DatePicker.domElem.header.year.nextBtn;
-							nextYearBtn.addEventListener('click', function(e){
+						DatePicker.eventHandler.nextMonth = function(clickedBtn){
+							if (DatePicker.current.getMonth() == 11) {
 								var newYear = DatePicker.current.getFullYear() + 1;
-								DatePicker.current.setFullYear(newYear);
-								var clickedBtn = e.target;
-								DatePicker.effect.cardsNext(12,clickedBtn);
-							});
+								DatePicker.current.setFullYear(newYear,0);
+							}else{
+								DatePicker.current.setMonth(DatePicker.current.getMonth()+1);
+							}
+							DatePicker.effect.cardsNext(1,clickedBtn);
 						};
-						DatePicker.event.prevMonth = function(){
-							var prevMonthBtn = DatePicker.domElem.monthDisplay.prevBtn;
-							prevMonthBtn.addEventListener('click', function(e){
-								if(DatePicker.current.getMonth() === 0){
-									var newYear = DatePicker.current.getFullYear() - 1;
-									DatePicker.current.setFullYear(newYear,11);
-								}else{
-									DatePicker.current.setMonth(DatePicker.current.getMonth()-1);
-								}
-								var clickedBtn = e.target;
-								DatePicker.effect.cardsPrev(1,clickedBtn);
-							});
-						};
-						DatePicker.event.nextMonth = function(){
-							var nextMonthBtn = DatePicker.domElem.monthDisplay.nextBtn;
-							nextMonthBtn.addEventListener('click', function(e){
-								if (DatePicker.current.getMonth() == 11) {
-									var newYear = DatePicker.current.getFullYear() + 1;
-									DatePicker.current.setFullYear(newYear,0);
-								}else{
-									DatePicker.current.setMonth(DatePicker.current.getMonth()+1);
-								}
-								var clickedBtn = e.target;
-								DatePicker.effect.cardsNext(1,clickedBtn);
-							});
-						};
-						DatePicker.event.selectDateHandler = function(e){
+						DatePicker.eventHandler.selectDateHandler = function(clickedBtn){
 							if (DatePicker.selectedDateBtn) {
 								$(DatePicker.selectedDateBtn).removeClass('selected');
 							}
-							var clickedBtn = e.target;
 							var targetDate = parseInt(clickedBtn.innerHTML);
 							DatePicker.result = DatePicker.current;
 							DatePicker.result.setDate(targetDate);
 							clickedBtn.className += ' selected';
 							DatePicker.selectedDateBtn = clickedBtn;
 						};
-						DatePicker.event.selectDate = function(dateBtn){
-							dateBtn.addEventListener('click', DatePicker.event.selectDateHandler);
+						DatePicker.eventHandler.confirmResult = function(targetTrigger){
+							var cyear,cmonth,cdate;
+							cyear = DatePicker.result.getFullYear();
+							cmonth = DatePicker.result.getMonth() < 9 ? '0' + (DatePicker.result.getMonth() + 1) : DatePicker.result.getMonth() + 1;
+							cdate = DatePicker.result.getDate() < 10 ? '0' + DatePicker.result.getDate() : DatePicker.result.getDate();
+							targetTrigger.value = cyear + '-' + cmonth + '-' + cdate;
+							$(targetTrigger).change();
+							var body = document.getElementsByTagName('body');
+							body[0].removeChild(DatePicker.container);
 						};
-						DatePicker.event.confirmResult = function(targetTrigger){
-							var confirmBtn = DatePicker.domElem.header.confirmBtn;
-							confirmBtn.addEventListener('click', function(e){
-								var cyear,cmonth,cdate;
-								cyear = DatePicker.result.getFullYear();
-								cmonth = DatePicker.result.getMonth() < 9 ? '0' + (DatePicker.result.getMonth() + 1) : DatePicker.result.getMonth() + 1;
-								cdate = DatePicker.result.getDate() < 10 ? '0' + DatePicker.result.getDate() : DatePicker.result.getDate();
-								targetTrigger.value = cyear + '-' + cmonth + '-' + cdate;
-								$(targetTrigger).change();
-								var body = document.getElementsByTagName('body');
-								body[0].removeChild(DatePicker.container);
-							});
+						DatePicker.eventHandler.clickHandler = function(e){
+							var target = e.target;
+							var targetClass = target.className;
+							switch(targetClass){
+								case 'confirm-btn':
+									DatePicker.eventHandler.confirmResult(targetTrigger);
+									break;
+								case 'prev-year-btn':
+									DatePicker.eventHandler.prevYear(target);
+									break;
+								case 'next-year-btn':
+									DatePicker.eventHandler.nextYear(target);
+									break;
+								case 'prev-month-btn':
+									DatePicker.eventHandler.prevMonth(target);
+									break;
+								case 'next-month-btn':
+									DatePicker.eventHandler.nextMonth(target);
+									break;
+								case 'date-btn':
+									DatePicker.eventHandler.selectDateHandler(target);
+									break;
+								default:
+									return 0;
+							}
 						};
 						// 组合DOM
 						DatePicker.combineDom = function(){
@@ -371,11 +376,7 @@
 					DatePicker.container.style.left = triggerPosition.left + (targetTrigger.clientWidth - 290)/2 + 'px';
 					DatePicker.container.style.top = triggerPosition.top - (250 - targetTrigger.clientHeight)/2 + 'px';
 					// 事件绑定
-					DatePicker.event.prevYear();
-					DatePicker.event.nextYear();
-					DatePicker.event.prevMonth();
-					DatePicker.event.nextMonth();
-					DatePicker.event.confirmResult(targetTrigger);
+					DatePicker.domElem.addEventListener('click', DatePicker.eventHandler.clickHandler, false);
 				});
 			};
 			init(targetTrigger);
